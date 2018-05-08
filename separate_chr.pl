@@ -2,24 +2,14 @@
 # Create a folder consists of fasta files, each of which contain a sequence
 # Input: a fasta file containing multiple sequences
 
-#! C:\Perl\bin -w
+#! /usr/bin/perl -w
 use strict;
 
-print "\nInput path:";
-my $path=<STDIN>;
-chomp($path);
+my $filein="/home/mnguyen/Research/Aniger_ATCC_13496/tRNAfinder/ATCC13496.reconstructed.v2.fasta";
+my $folderout="/home/mnguyen/Research/Aniger_ATCC_13496/tRNAfinder/ATCC13496_chrs";
+mkdir $folderout;
 
-print "\nInput fasta file:";
-my $filein=<STDIN>;
-chomp($filein);
-
-print "\nInput folder name:";
-my $folder=<STDIN>;
-chomp($folder);
-
-mkdir ("$path\\$folder");
-
-open(In,"<$path\\$filein") || die "Cannot open file $filein";
+open(In,"<$filein") || die "Cannot open file $filein";
 my $flag=0;
 while (<In>)
 {
@@ -33,12 +23,11 @@ while (<In>)
 		
 		if ($flag>0){close(Out);}
 		
-		open(Out,">$path\\$folder\\$fileout") || die "Cannot open file $fileout";
+		open(Out,">$folderout/$fileout") || die "Cannot open file $fileout";
 		$flag++;
 		print Out "$_\n";
 		
-	}
-	else{print Out "$_\n";}
+	}else{print Out "$_\n";}
 }
 close(In);
 close(Out);
