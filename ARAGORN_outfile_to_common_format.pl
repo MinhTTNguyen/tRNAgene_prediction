@@ -4,35 +4,25 @@
 # End < Begin if complement
 # Use for all genomes, all sequence IDs
 
-#! C:\Perl\bin\perl -w
+#! /usr/bin/perl -w
 use strict;
 
-print "\nInput common path:";
-my $path=<STDIN>;
-chomp($path);
+my $folder_in="/home/mnguyen/Research/Aniger_ATCC_13496/ARAGORN";# folder containing files output from ARAGORN
+my $folder_out="/home/mnguyen/Research/Aniger_ATCC_13496/ARAGORN_tbl";
+mkdir "$folder_out";
 
-print "\nInput folder containing output files from ARAGORN:";
-my $folder_in=<STDIN>;
-chomp($folder_in);
-
-print "\nInput folder containing output files from ARAGORN (tabular format):";
-my $folder_out=<STDIN>;
-chomp($folder_out);
-
-mkdir "$path\\$folder_out";
-
-opendir(DIR,"$path\\$folder_in") || die "Cannot open folder $folder_in"; 
+opendir(DIR,"$folder_in") || die "Cannot open folder $folder_in"; 
 my @files = readdir(DIR);
-shift(@files);shift(@files);
 closedir(DIR);
 
 foreach my $filein (@files)
 {
+	if (($filein eq ".") or ($filein eq "..")){next;}
 	my $fileout=substr($filein,0,-4);
-	$fileout=$fileout."_column.out";
+	$fileout=$fileout.".tbl";
 	
-	open(In,"<$path\\$folder_in\\$filein") || die "Cannot open In file";
-	open (Out,">$path\\$folder_out\\$fileout") || die "Cannot open Out file";
+	open(In,"<$folder_in/$filein") || die "Cannot open In file";
+	open (Out,">$folder_out/$fileout") || die "Cannot open Out file";
 	
 	print Out "SeqID\tGene_begin\tGene_end\tAA\tAnticodon\tIntron_begin\tIntron_end\n";
 	
